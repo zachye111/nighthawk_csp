@@ -1,6 +1,6 @@
 """control dependencies to support CRUD app routes and APIs"""
 from flask import Blueprint, render_template, request, url_for, redirect, jsonify, make_response
-from flask_login import login_required
+from flask_login import login_required, logout_user, login_user
 
 from cruddy.query import *
 
@@ -130,3 +130,9 @@ def search_term():
     term = req['term']
     response = make_response(jsonify(users_ilike(term)), 200)
     return response
+
+@app_crud.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
